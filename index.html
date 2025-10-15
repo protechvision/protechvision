@@ -1,0 +1,382 @@
+<!--
+protech vision IT Solutions - Single-file multi-section website
+Instructions:
+- This is a responsive single-file website (multi-page feel via sections and anchor navigation).
+- To enable the contact form email feature replace FORM_ACTION with your email service endpoint (Formspree, EmailJS, Netlify Forms, or your server endpoint).
+  Example (Formspree): action="https://formspree.io/f/yourformid" method="POST"
+- Replace placeholder images with your own installation photos in the /assets/ or full URLs.
+- Update PHONE_NUMBER and WHATSAPP_NUMBER variables in the script if needed.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PROTECH VISION IT Solutions — CCTV & Security Systems</title>
+  <meta name="description" content="PROTECH VISION  Solutions — CCTV camera installation, repair, remote monitoring and IT security solutions for homes and businesses.">
+  <meta name="keywords" content="CCTV camera installation, security system provider, CCTV repair services, home surveillance, office camera setup, IT solutions provider">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo="> 
+  <style>
+    /* Reset & base */
+    :root{--blue:#0b6ef6;--dark:#0f1724;--muted:#6b7280;--card:#f8fafc;--glass:rgba(255,255,255,0.06)}
+    *{box-sizing:border-box}html,body{height:100%}body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,'Helvetica Neue',Arial;line-height:1.5;color:#0f1724;margin:0;background:#f6f9fc}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;height:auto;display:block}
+
+    /* Header */
+    .header{position:sticky;top:0;z-index:999;background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(15,23,36,0.06)}
+    .nav{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--blue),#3b82f6);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    .nav-links{display:flex;gap:18px;align-items:center}
+    .nav-links a{padding:8px 12px;border-radius:8px;color:var(--dark);font-weight:600}
+    .cta{display:flex;gap:8px}
+    .btn{background:var(--blue);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700;box-shadow:0 6px 18px rgba(11,110,246,0.12);border:none;cursor:pointer}
+    .btn-outline{background:transparent;border:1px solid rgba(15,23,36,0.06);padding:9px 12px;border-radius:10px}
+    .icon-button{display:inline-flex;align-items:center;gap:8px}
+
+    /* Hero */
+    .hero{background:linear-gradient(90deg, rgba(10,22,36,0.04), rgba(255,255,255,0.02));padding:56px 20px}
+    .hero-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center}
+    .hero-card{background:linear-gradient(180deg,#fff,#f7fbff);padding:28px;border-radius:16px;box-shadow:0 10px 30px rgba(8,23,56,0.06)}
+    .tagline{font-size:28px;font-weight:800;margin:0 0 10px}
+    .lead{color:var(--muted);margin-bottom:18px}
+    .features{display:flex;gap:12px;flex-wrap:wrap}
+    .feature{background:#fff;padding:10px 12px;border-radius:10px;border:1px solid rgba(15,23,36,0.04);display:flex;gap:10px;align-items:center}
+
+    /* Cards */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+    .service-card{background:linear-gradient(180deg,#ffffff,#fbfdff);padding:18px;border-radius:12px;border:1px solid rgba(11,110,246,0.06)}
+    .service-card h4{margin:0 0 8px}
+
+    /* Gallery */
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+
+    /* Sections spacing */
+    section{padding:36px 20px}
+    .container{max-width:1200px;margin:0 auto}
+
+    /* Services list */
+    .services-list{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .service-item{background:white;padding:16px;border-radius:10px;border:1px solid rgba(15,23,36,0.04)}
+
+    /* Products */
+    .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .product{background:white;padding:12px;border-radius:12px;text-align:center;border:1px solid rgba(15,23,36,0.04)}
+
+    /* Testimonials */
+    .testimonials{display:flex;gap:12px;align-items:center}
+    .testimonial{background:linear-gradient(180deg,#fff,#fbfdff);padding:16px;border-radius:10px;min-width:260px}
+
+    /* Contact */
+    .contact-grid{display:grid;grid-template-columns:1fr 420px;gap:18px}
+    form{background:white;padding:18px;border-radius:12px;border:1px solid rgba(15,23,36,0.04)}
+    input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(15,23,36,0.08);margin-bottom:10px}
+
+    footer{background:#071033;color:#dbeafe;padding:28px 20px}
+    .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+
+    /* WhatsApp floating */
+    .whatsapp{position:fixed;right:18px;bottom:18px;background:#25D366;color:white;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(37,211,102,0.18);z-index:999}
+
+    /* Responsive */
+    @media (max-width:980px){.hero-grid{grid-template-columns:1fr}.product-grid{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:repeat(2,1fr)}.services-list{grid-template-columns:1fr}}
+    @media (max-width:640px){.nav-links{display:none}.hero{padding:28px}.testimonial{min-width:200px}.product-grid{grid-template-columns:1fr}}
+
+    /* Simple animations */
+    .fade-up{opacity:0;transform:translateY(10px);animation:fadeUp 0.7s ease forwards}
+    @keyframes fadeUp{to{opacity:1;transform:none}}
+    .hover-rise{transition:transform .22s ease,box-shadow .22s;}
+    .hover-rise:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(11,110,246,0.12)}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav container">
+      <div class="brand">
+        <div class="logo">P</div>
+        <div>
+          <div style="font-weight:800;">PROTECH VISION IT Solutions</div>
+          <div style="font-size:12px;color:var(--muted)">CCTV • Security • IT</div>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#products">Products</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="cta">
+        <a href="tel:+919310483598" class="icon-button btn-outline"><span>📞</span> +91 9310483598</a>
+        <a href="https://wa.me/9310483598" class="btn">WhatsApp</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-grid">
+        <div class="hero-card fade-up">
+          <h1 class="tagline">Your Security, Our Priority</h1>
+          <p class="lead">PROTECH VISION  IT Solutions provides end-to-end CCTV installation, repair and remote monitoring services for homes and businesses — trusted by local clients for reliable surveillance systems and rapid support.</p>
+
+          <div class="features">
+            <div class="feature">✔️ Free Site Survey</div>
+            <div class="feature">✔️ 24/7 Support</div>
+            <div class="feature">✔️ Authorized Installers</div>
+          </div>
+
+          <div style="margin-top:18px;display:flex;gap:12px">
+            <a href="#contact" class="btn">Get a Free Quote</a>
+            <a href="tel:+919310483598" class="btn-outline">Call Now</a>
+          </div>
+
+          <div style="margin-top:20px" class="cards">
+            <div class="service-card hover-rise">
+              <h4>CCTV Installation</h4>
+              <p>Professional placement, wiring, and camera configuration for optimal coverage.</p>
+            </div>
+            <div class="service-card hover-rise">
+              <h4>Repairs & Maintenance</h4>
+              <p>On-site repairs, spare parts, and regular maintenance contracts to keep systems healthy.</p>
+            </div>
+            <div class="service-card hover-rise">
+              <h4>Remote Monitoring</h4>
+              <p>Setup of remote viewing, cloud storage and alerting systems for peace of mind.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="fade-up">
+          <div style="border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(8,23,56,0.06)">
+            <img src="https://fudsinternational.com/cdn/shop/articles/CCTV_blog_img_26d93dd9-0551-4ab0-b315-4cef8659c134.jpg?v=1746610128&width=1100" alt="CCTV hero" style="width:100%;height:100%;object-fit:cover;max-height:460px">
+          </div>
+
+          <div style="margin-top:14px;background:white;padding:12px;border-radius:10px;display:flex;gap:10px;align-items:center">
+            <img src="https://cdn1.npcdn.net/images/1714995392_3fce64768ee4bf73915bd42427e1877b.webp?md5id=a390ff7af39b581d079075b5f848662e&new_width=1000&new_height=1000&size=max&type=3&w=1710472569&off_wm=1&from=jpeg" alt="technician" style="width:64px;height:64px;border-radius:8px;object-fit:cover">
+            <div>
+              <div style="font-weight:700">Authorized Installer</div>
+              <div style="font-size:13px;color:var(--muted)">Hikvision • Dahua • CP Plus</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <h2>About PROTECH VISION IT Solutions</h2>
+        <div style="display:flex;gap:22px;align-items:center;margin-top:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:280px">
+            <p>Founded with the mission to protect local communities and businesses, PROTECH VISION IT Solutions combines experienced technicians with trusted products to design, deploy and maintain reliable surveillance and IT security systems. Our team has decades of combined experience in CCTV, networking and system integration.</p>
+            <ul style="color:var(--muted)">
+              <li>Certified technicians and installers</li>
+              <li>Comprehensive site surveys and custom proposals</li>
+              <li>Long-term support & maintenance contracts</li>
+            </ul>
+          </div>
+          <div style="width:420px;border-radius:12px;overflow:hidden">
+            <img src="https://saycure.weebly.com/uploads/1/3/5/8/135892170/security-camera-installation-in-coimbatore_orig.png" alt="team" style="width:100%;height:100%;object-fit:cover">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" style="background:linear-gradient(180deg,#fbfdff,#ffffff)">
+      <div class="container">
+        <h2>Our Services</h2>
+        <p style="color:var(--muted)">End-to-end solutions for homes and businesses — from installation to ongoing technical support.</p>
+        <div class="services-list" style="margin-top:16px">
+          <div class="service-item hover-rise">
+            <h3>CCTV Camera Installation</h3>
+            <p>Site survey, camera selection, mounting, cabling (concealed or surface), and system setup.</p>
+          </div>
+          <div class="service-item hover-rise">
+            <h3>Camera Repair & Troubleshooting</h3>
+            <p>Fault diagnosis, lens replacement, rewiring, and component-level repairs for DVR/NVRs.</p>
+          </div>
+          <div class="service-item hover-rise">
+            <h3>Maintenance Contracts</h3>
+            <p>Periodic checks, cleaning, software updates and priority support to keep systems operational.</p>
+          </div>
+          <div class="service-item hover-rise">
+            <h3>Remote Monitoring Setup</h3>
+            <p>Mobile and cloud integration, remote access configuration and alert systems for immediate response.</p>
+          </div>
+          <div class="service-item hover-rise">
+            <h3>Networking & IT Support</h3>
+            <p>LAN/WAN integration, PoE switches, bandwidth planning and integrating CCTV into existing IT infrastructure.</p>
+          </div>
+          <div class="service-item hover-rise">
+            <h3>Custom Security Design</h3>
+            <p>Tailored system design for warehouses, shops, offices, and gated communities.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section id="products">
+      <div class="container">
+        <h2>Products</h2>
+        <p style="color:var(--muted)">We supply and support popular CCTV brands: Hikvision, Dahua, CP Plus and more.</p>
+        <div class="product-grid" style="margin-top:14px">
+          <div class="product hover-rise">
+            <img src="https://cdn.acghar.com/public/840-840/files/0FE3799D9DE6941-HIKVISION-Survillence-Cameras.png" alt="Dome camera" style="height:140px;object-fit:contain">
+            <h4>Hikvision Dome Camera</h4>
+            <p style="color:var(--muted);font-size:13px">4MP • Night Vision • IP67</p>
+          </div>
+          <div class="product hover-rise">
+            <img src="https://5.imimg.com/data5/SELLER/Default/2023/8/332602840/IB/EG/PD/13069255/dahua-4-pcs-2mp-dome-cctv-and-dvr-hd-analog-combo.jpg" alt="Bullet camera" style="height:140px;object-fit:contain">
+            <h4>Dahua Bullet Camera</h4>
+            <p style="color:var(--muted);font-size:13px">5MP • PoE • Weatherproof</p>
+          </div>
+          <div class="product hover-rise">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJfq4LfnGlKih2fQ90lWf1xtji8aV69tfU0w&s" alt="NVR" style="height:140px;object-fit:contain">
+            <h4>NVR / DVR Systems</h4>
+            <p style="color:var(--muted);font-size:13px">Multi-channel recording, HDD support, remote access</p>
+          </div>
+          <div class="product hover-rise">
+            <img src="https://www.getscw.com/images/installation/poe-switch/poe-switch-to-router.jpg" alt="accessories" style="height:140px;object-fit:contain">
+            <h4>Accessories & Spares</h4>
+            <p style="color:var(--muted);font-size:13px">Cables, PoE switches, mounts, HDDs</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" style="background:linear-gradient(180deg,#ffffff,#f7fbff)">
+      <div class="container">
+        <h2>Gallery</h2>
+        <p style="color:var(--muted)">Real installations and setups by our technicians.</p>
+        <div class="gallery-grid" style="margin-top:12px">
+          <img src="https://t3.ftcdn.net/jpg/02/74/02/80/360_F_274028062_IiGqvivjEWPAFbNDuczhNkSbDaXhdhmm.jpg" alt="install1">
+          <img src="https://images.ctfassets.net/5kq8dse7hipf/3mLqob7CT5DkPmI6fuYlXX/17e4871c4621767ee0647988b1f717f0/Feature-where-can-i-point-my-cctv-cameras.jpg?w=1024&fm=webp" alt="install2">
+          <img src="https://plus.unsplash.com/premium_photo-1678766819199-5660bab7085b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=871" alt="install3">
+          <img src="https://t4.ftcdn.net/jpg/03/84/55/29/360_F_384552930_zPoe9zgmCF7qgt8fqSedcyJ6C6Ye3dFs.jpg" alt="office1">
+          <img src="https://axeloncables.com/images/cctv1.jpg" alt="cable">
+          <img src="https://5.imimg.com/data5/SELLER/Default/2023/5/309581630/UN/DH/NQ/2605093/cctv-camera-dvr-rack-500x500.JPG" alt="rack">
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS & CLIENTS -->
+    <section style="padding-bottom:8px;padding-top:8px">
+      <div class="container">
+        <h2>What Clients Say</h2>
+        <div style="display:flex;gap:12px;overflow:auto;padding:12px 0">
+          <div class="testimonial hover-rise">
+            <strong>Ravi K.</strong>
+            <p style="color:var(--muted);font-size:14px">"Fast installation and great after-sales support. Cameras are crystal clear."</p>
+          </div>
+          <div class="testimonial hover-rise">
+            <strong>Sunita M.</strong>
+            <p style="color:var(--muted);font-size:14px">"Maintenance contract saved us time and money — monthly checks keep our system healthy."</p>
+          </div>
+          <div class="testimonial hover-rise">
+            <strong>Prime Logistics</strong>
+            <p style="color:var(--muted);font-size:14px">"Professional team for warehouse camera setup and remote monitoring."</p>
+          </div>
+        </div>
+
+       
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container contact-grid">
+        <div>
+          <h2>Contact Us</h2>
+          <p style="color:var(--muted)">Schedule a free site visit or ask about products and services.</p>
+
+          <!-- Replace ACTION with your mail endpoint (Formspree / server) -->
+          <form action="https://formsubmit.co/visionprotech4@gmail.com" method="POST">
+            <input type="text" name="name" placeholder="Your name" required>
+            <input type="email" name="email" placeholder="Your email" required>
+            <input type="tel" name="phone" placeholder="Phone number" required>
+            <input type="text" name="subject" placeholder="Subject" required>
+            <textarea name="message" rows="5" placeholder="Message"></textarea>
+            <button type="submit" class="btn">Send Message</button>
+          </form>
+
+          <div style="margin-top:12px;color:var(--muted)">
+            <p><strong>Phone:</strong> +91 9310483598</p>
+            <p><strong>Email:</strong> visionprotech4@gmail.com</p>
+            <p><strong>Address:</strong> New Delhi </p>
+          </div>
+        </div>
+
+        <aside style="min-width:320px">
+          <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(15,23,36,0.04)">
+            <!-- Google Maps embed: replace with your location iframe -->
+            <iframe width="100%" height="300" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019151586499!2d144.9588879153158!3d-37.81720997975112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43f0f0b1d5%3A0xa8d0ae1f0e23f2e7!2sSample%20Place!5e0!3m2!1sen!2sin!4v1580000000000!5m2!1sen!2sin"></iframe>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
+            <a href="#" style="display:flex;gap:8px;align-items:center"><img src="https://simpleicons.org/icons/facebook.svg" alt="fb" style="width:22px;height:22px;filter:grayscale(1)"> Facebook</a>
+            <a href="#" style="display:flex;gap:8px;align-items:center"><img src="https://simpleicons.org/icons/instagram.svg" alt="ig" style="width:22px;height:22px;filter:grayscale(1)"> Instagram</a>
+            <a href="#" style="display:flex;gap:8px;align-items:center"><img src="https://simpleicons.org/icons/linkedin.svg" alt="li" style="width:22px;height:22px;filter:grayscale(1)"> LinkedIn</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating WhatsApp -->
+  <a class="whatsapp" href="https://wa.me/919310483598" target="_blank" aria-label="Chat on WhatsApp">💬</a>
+
+  <footer>
+    <div class="footer-inner container">
+      <div>
+        <strong>PROTECH VISION IT Solutions</strong>
+        <div style="font-size:13px;color:#c7dafe">Trusted CCTV & Security Provider</div>
+      </div>
+      <div style="font-size:14px;color:#c7dafe">© <span id="year"></span> PROTECH VISION IT Solutions • All rights reserved</div>
+    </div>
+  </footer>
+
+  <script>
+    // Small JS for interactions
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Contact form submission handler (progressive enhancement)
+    const contactForm = document.getElementById('contactForm');
+    contactForm && contactForm.addEventListener('submit', function(e){
+      // If FORM_ACTION is still present, prevent default and show instructions
+      if(this.action === 'FORM_ACTION'){
+        e.preventDefault();
+        alert('To enable email sending: replace FORM_ACTION in the form action attribute with your email form endpoint (Formspree, EmailJS, or your server).');
+        return;
+      }
+      // otherwise, allow normal submit
+    });
+
+    // Simple testimonial carousel
+    let idx = 0;
+    const tests = document.querySelectorAll('.testimonial');
+    function rotateTestimonials(){
+      tests.forEach((t,i)=>{t.style.display = (i===idx)?'block':'none'});
+      idx = (idx+1)%tests.length;
+    }
+    if(tests.length){rotateTestimonials();setInterval(rotateTestimonials,4500)}
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',function(e){
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}
+      })
+    });
+  </script>
+</body>
+</html>
